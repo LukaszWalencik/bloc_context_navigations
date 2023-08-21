@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: MyHomePage()),
+          home: BlocProvider(
+            create: (context) => CounterCubit(),
+            child: MyHomePage(),
+          )),
     );
   }
 }
@@ -39,8 +42,12 @@ class MyHomePage extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ShowMeCounter()));
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return BlocProvider.value(
+                      value: context.read<CounterCubit>(),
+                      child: ShowMeCounter(),
+                    );
+                  }));
                 },
                 child: Text(
                   'Show me counter',
@@ -48,7 +55,9 @@ class MyHomePage extends StatelessWidget {
                 )),
             SizedBox(height: 20),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<CounterCubit>(context).increment();
+                },
                 child: Text(
                   'Inrement counter',
                   style: TextStyle(fontSize: 20),

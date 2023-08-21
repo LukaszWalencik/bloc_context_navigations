@@ -1,4 +1,6 @@
+import 'package:bloc_context/counter/counter_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShowMeCounter extends StatelessWidget {
   const ShowMeCounter({super.key});
@@ -10,9 +12,13 @@ class ShowMeCounter extends StatelessWidget {
         title: Text('Counter'),
       ),
       body: Center(
-        child: Text(
-          '0',
-          style: TextStyle(fontSize: 20),
+        child: BlocBuilder<CounterCubit, CounterState>(
+          builder: (context, state) {
+            return Text(
+              '${state.counter}',
+              style: TextStyle(fontSize: 20),
+            );
+          },
         ),
       ),
     );
