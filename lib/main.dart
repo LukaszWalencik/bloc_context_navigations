@@ -40,6 +40,11 @@ class MyApp extends StatelessWidget {
                 ),
               );
           }
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider.value(
+                    value: _counterCubit,
+                    child: MyHomePage(),
+                  ));
         },
       ),
     );
