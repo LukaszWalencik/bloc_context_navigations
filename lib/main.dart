@@ -23,15 +23,23 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        routes: {
-          '/': (context) => BlocProvider.value(
-                value: _counterCubit,
-                child: MyHomePage(),
-              ),
-          '/counter': (context) => BlocProvider.value(
-                value: _counterCubit,
-                child: ShowMeCounter(),
-              )
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: _counterCubit,
+                  child: MyHomePage(),
+                ),
+              );
+            case '/counter':
+              return MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: _counterCubit,
+                  child: ShowMeCounter(),
+                ),
+              );
+          }
         },
       ),
     );
