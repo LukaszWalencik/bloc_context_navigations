@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CounterCubit _counterCubit = CounterCubit();
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -16,16 +17,23 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => CounterCubit(),
       child: MaterialApp(
-          title: 'Bloc Context',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: BlocProvider(
-            create: (context) => CounterCubit(),
-            child: MyHomePage(),
-          )),
+        title: 'Bloc Context',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        routes: {
+          '/': (context) => BlocProvider.value(
+                value: _counterCubit,
+                child: MyHomePage(),
+              ),
+          '/counter': (context) => BlocProvider.value(
+                value: _counterCubit,
+                child: ShowMeCounter(),
+              )
+        },
+      ),
     );
   }
 }
@@ -42,12 +50,7 @@ class MyHomePage extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return BlocProvider.value(
-                      value: context.read<CounterCubit>(),
-                      child: ShowMeCounter(),
-                    );
-                  }));
+                  Navigator.pushNamed(context, '/counter');
                 },
                 child: Text(
                   'Show me counter',
